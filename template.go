@@ -6,7 +6,15 @@ import (
 	"html/template"
 )
 
-type dict map[string]string
+type dict map[string]interface{}
+
+func newDict(data []byte) (dict, error) {
+	var d dict
+	if err := json.Unmarshal(data, &d); err != nil {
+		return nil, err
+	}
+	return d, nil
+}
 
 func (d *dict) toJSON() (string, error) {
 	s, err := json.Marshal(d)
